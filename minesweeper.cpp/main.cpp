@@ -1,6 +1,5 @@
 //
 //  main.cpp
-//  helloworld.cpp
 //
 //  Created by Riya Walia on 2016-10-22.
 //  Copyright © 2016 Riya Walia. All rights reserved.
@@ -8,36 +7,73 @@
 
 #include <iostream>
 using namespace std;
-int bomb (int c) {
-    if (c==0) return 1;
-    else return 0;
+
+/*
+ The mine is represented by a 8 by 8 grid, which is implemented by two dimensional arrays.
+ Value Array: This array contains the "value" behind every tile in a mine. The "value" is a number
+ between 0 and 8, where 0 denotes that the tile is a bomb and 1-8 denotes the
+ number of bombs within the radius of the tile.
+ 
+ Mine Array: This array is displayed to the user and represents the current state of the mine as
+ to the user. Uncovered tiles are represented by '*'. Covered tiles are represented by
+ its "value" (1 - 8). Marked tiles (marked as a bomb by the user) are represented by 'B'.
+ 
+ Dynamics of the game: The mine has a maximum of 25 bombs which are randomly allocated to the tiles per
+ execution of the program. Game is over once a bomb is uncovered. Game is won once
+ all non-bomb tiles have been uncovered.
+ */
+
+int const size = 9; // mine displayed to the user is 8 by 8 but as first row and column are indexes, arrays are 9 by 9.
+
+// helps in counting the number of bombs in radius of a tile
+int bomb (int value) {
+    if (value == 0) {
+        return 1;
+    }
+    return 0;
 }
 // takes in a different array which is the "value array". Randomly allocates 0 and 1 to the tiles
 // and makes sure that there are exactly 25 bombs.
-void allocate_bombs(int V[9][9])
-{ int max=0;
-    while(max<=25) {
-    for (int i=1; i<9 ; i++)
-        for (int j=1; j<9; j++)
-        { V[i][j]= rand()%2;
-            if (V[i][j]==0) max++; }
-}
+void allocate_bombs(int values[size][size])
+{   int const max_bombs = 25;
+    int bombs = 0;
+    while(bombs <= max_bombs) {
+        for (int i = 1; i < size ; ++i)
+            for (int j = 1; j < size; ++j) {
+                values[i][j] = rand() % 2;
+                if (values[i][j] == 0) {
+                    ++bombs;
+                }
+            }
+    }
 }
 // displays the mine
-void display_mine(char M[9][9])
+void display_mine(char mine[size][size])
 {
-    for(int i=0; i<=8; i++)
-    {
-        for(int j=0; j<=8; j++)
-            std::cout<< M[i][j]<<"            ";
-        std::cout<<std::endl<<endl<<endl; }
+    for(int i = 0; i < size; ++i) {
+        for(int j = 0; j <size; ++j) {
+            std::cout<< mine[i][j]<<"            ";
+        }
+        std::cout<<std::endl<<endl<<endl;
+    }
 }
 
+bool check_game_won(char mine[size][size], int values[size][size]) {
+    for (int i = 1; i < size; ++i) {
+        for (int j = 1; j < size; ++j) {
+            // if tile is not a bomb but is uncovered, game has not been won.
+            if (values[i][j] > 0 && mine[i][j] == '*') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 // checks if coordinate entered is a bomb tile
 // if yes, then it displays the mine again with the bomb tile showing
 // otherwise, it just displays the mine again with teh clear tile showing
-void checkforbomb(char M[9][9],int V[9][9])
+void check_for_bomb(char mine[size][size],int values[size][size])
 {   int r,c, bomb;
     std::cout<<"Enter row number: "<<std::endl;
     std::cin>>r;
@@ -45,39 +81,47 @@ void checkforbomb(char M[9][9],int V[9][9])
     std::cin>>c;
     std::cout<<"To mark this as a bomb, enter 0. Otherwise enter 1."<<std::endl;
     std::cin>>bomb;
-    if (bomb==1) {
-        if(V[r][c]!=0) {
-            M[r][c]= 48+V[r][c]; //displays count of tile
-            display_mine(M); }
-        else std::cout<<"Sorry! Game over. You suck."<<endl;;
-        
+    if (bomb == 1) {
+        if(values[r][c] != 0) {
+            mine[r][c] = 48 + values[r][c]; // uncovers tile
+            if (check_game_won(mine, values)) {
+                std::cout<<"Congratulations! You won the game! "<<endl;
+                return;
+            }
+            display_mine(mine);
+        }
+        else std::cout<<"Sorry! Game over."<<endl;
     }
-    if (bomb==0) {
-    M[r][c]='B'; display_mine(M);
-  }
+    else if (bomb == 0) {
+        mine[r][c] = 'B'; display_mine(mine);
+    }
     else std::cout<<"Invalid input. Try again!"<<endl;
 }
 // takes in the value array and allocates count of neighbouring bombs to non-bomb tiles
-void allocate_count (int V[9][9]) {
-    for (int i=1; i<=8; i++)
-        for (int j=1;j<=8;j++)
-            if(V[i][j]==0 && i!=0 && j!=0)
-                V[i][j]= bomb(V[i-1][j])+bomb(V[i+1][j])+bomb(V[i][j+1])+
-                         bomb(V[i][j-1])+bomb(V[i-1][j-1])+bomb(V[i+1][j+1]);
+void allocate_count (int values[size][size]) {
+    for (int i = 1; i < size; ++i)
+        for (int j = 1; j < size; ++j)
+            if(values[i][j] == 0 && i != 0 && j !=0 )
+                values[i][j] = bomb(values[i - 1][j]) + bomb(values[i + 1][j]) + bomb(values[i][j + 1])+
+                bomb(values[i][j - 1]) + bomb(values[i - 1][j - 1]) + bomb(values[i + 1][j + 1]);
 }
 
 int main() {
     int answer;
-// making my value array:
-    int V[9][9];
-// making my display array:
-    char M[9][9];
-    for (int i=1; i<9; i++)
-        for (int j=1; j<9; j++)
-            M[i] [j]= '*';
-    for (int a=0; a<9; a++) M[0][a]=a+48;
-    for (int b=0; b<9; b++) M[b][0]=b+48;
-// menu:
+    // making my value array:
+    int values[size][size];
+    // making my display array:
+    char mine[size][size];
+    for (int i = 1; i < size; ++i)
+        for (int j = 1; j < size; ++j)
+            mine[i] [j] = '*';
+    for (int a = 0; a < size; ++a) {
+        mine[0][a] = a + 48;
+    }
+    for (int b = 0; b < size; ++b) {
+        mine[b][0] = b + 48;
+    }
+    // menu:
     do
     {
         std::cout<<"Please choose an option"<<std::endl;
@@ -86,16 +130,16 @@ int main() {
         std::cout<<"3. End Game"<<std::endl;
         std::cin>>answer;
         switch(answer) {
-            case 1:   display_mine(M); allocate_bombs(V); allocate_count(V);
+            case 1:   display_mine(mine); allocate_bombs(values); allocate_count(values);
                 break;
-            case 2:   checkforbomb(M,V);
+            case 2:   check_for_bomb(mine,values);
                 break;
-                default: std::cout<<"Invalid input. Try again!"<<endl;
+            case 3: return 0;
+                break;
+            default: std::cout<<"Invalid input. Try again!"<<endl;
                 break;
         }
     }
-    while (answer!=3);
+    while (answer != 3);
     return 0;
 }
-
-

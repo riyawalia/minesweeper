@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		935CA5571DBB55C700E2479E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 935CA5561DBB55C700E2479E /* main.cpp */; };
+		9308EE851EED1671008E926C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308EE841EED1671008E926C /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9308EE841EED1671008E926C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = minesweeper.cpp/main.cpp; sourceTree = "<group>"; };
 		935CA5531DBB55C700E2479E /* helloworld.cpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = helloworld.cpp; sourceTree = BUILT_PRODUCTS_DIR; };
-		935CA5561DBB55C700E2479E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +41,7 @@
 		935CA54A1DBB55C600E2479E = {
 			isa = PBXGroup;
 			children = (
-				935CA5551DBB55C700E2479E /* helloworld.cpp */,
+				9308EE841EED1671008E926C /* main.cpp */,
 				935CA5541DBB55C700E2479E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,14 +52,6 @@
 				935CA5531DBB55C700E2479E /* helloworld.cpp */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		935CA5551DBB55C700E2479E /* helloworld.cpp */ = {
-			isa = PBXGroup;
-			children = (
-				935CA5561DBB55C700E2479E /* main.cpp */,
-			);
-			path = helloworld.cpp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,7 +89,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 935CA54E1DBB55C600E2479E /* Build configuration list for PBXProject "helloworld.cpp" */;
+			buildConfigurationList = 935CA54E1DBB55C600E2479E /* Build configuration list for PBXProject "minesweeper" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -119,7 +111,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				935CA5571DBB55C700E2479E /* main.cpp in Sources */,
+				9308EE851EED1671008E926C /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +224,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		935CA54E1DBB55C600E2479E /* Build configuration list for PBXProject "helloworld.cpp" */ = {
+		935CA54E1DBB55C600E2479E /* Build configuration list for PBXProject "minesweeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				935CA5581DBB55C700E2479E /* Debug */,
