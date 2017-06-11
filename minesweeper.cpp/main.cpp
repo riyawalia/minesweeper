@@ -99,47 +99,60 @@ void check_for_bomb(char mine[size][size],int values[size][size])
 }
 // takes in the value array and allocates count of neighbouring bombs to non-bomb tiles
 void allocate_count (int values[size][size]) {
-    for (int i = 1; i < size; ++i)
-        for (int j = 1; j < size; ++j)
-            if(values[i][j] == 0 && i != 0 && j !=0 )
-                values[i][j] = bomb(values[i - 1][j]) + bomb(values[i + 1][j]) + bomb(values[i][j + 1])+
-                bomb(values[i][j - 1]) + bomb(values[i - 1][j - 1]) + bomb(values[i + 1][j + 1]);
+    for (int i = 1; i < size; ++i) {
+        for (int j = 1; j < size; ++j) {
+            if (values[i][j] == 0 && i != 0 && j !=0 ) { // if tile is not a bomb nor an index i.e. uncovered
+                values[i][j] = bomb(values[i - 1][j]) + bomb(values[i + 1][j]) +
+                               bomb(values[i][j + 1]) + bomb(values[i][j - 1]) +
+                               bomb(values[i - 1][j - 1]) + bomb(values[i + 1][j + 1]);
+            }
+        }
+    }
+}
+// Creates a new mine for a new game
+void new_mine(char mine[size][size]) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            // allocating indexes for first row and column
+            if (i == 0) {
+                mine[i][j] = j + '0';
+            }
+            else if (j == 0) {
+                mine[i][j] = i + '0';
+            }
+            // alocating uncovered tiles:
+            else {
+                mine[i][j] = '*';
+            }
+        }
+    }
 }
 
 int main() {
-    int answer;
-    // making my value array:
+    char command;
     int values[size][size];
-    // making my display array:
     char mine[size][size];
-    for (int i = 1; i < size; ++i)
-        for (int j = 1; j < size; ++j)
-            mine[i] [j] = '*';
-    for (int a = 0; a < size; ++a) {
-        mine[0][a] = a + 48;
-    }
-    for (int b = 0; b < size; ++b) {
-        mine[b][0] = b + 48;
-    }
     // menu:
-    do
+    while(1) // switch case breaks out of the loop
     {
         std::cout<<"Please choose an option"<<std::endl;
-        std::cout<<"1. New Game"<<std::endl;
-        std::cout<<"2. Enter a coordinate"<<std::endl;
-        std::cout<<"3. End Game"<<std::endl;
-        std::cin>>answer;
-        switch(answer) {
-            case 1:   display_mine(mine); allocate_bombs(values); allocate_count(values);
+        std::cout<<"N: New Game"<<std::endl;
+        std::cout<<"C: Enter a coordinate"<<std::endl;
+        std::cout<<"Q: Quit Game"<<std::endl;
+        std::cin>>command;
+        switch(toupper(command)) {
+            case 'N':   new_mine(mine);
+                        display_mine(mine);
+                        allocate_bombs(values);
+                        allocate_count(values);
                 break;
-            case 2:   check_for_bomb(mine,values);
+            case 'C':   check_for_bomb(mine,values);
                 break;
-            case 3: return 0;
+            case 'Q': return 0;
                 break;
             default: std::cout<<"Invalid input. Try again!"<<endl;
                 break;
         }
     }
-    while (answer != 3);
     return 0;
 }
