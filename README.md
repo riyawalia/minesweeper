@@ -11,7 +11,7 @@ The menu has three options
 * Enter a coordinate
 * Quit Game
 
-###Value Array
+### Value Array
 
 This array (of integers) contains the "value" behind every tile in a mine. The "value" is a number
 between 0 and 8, where 0 denotes that the tile is a bomb and 1-8 denotes the number of bombs within the radius of the tile.
