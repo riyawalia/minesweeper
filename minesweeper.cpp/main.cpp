@@ -8,22 +8,9 @@
 #include <iostream>
 using namespace std;
 
-/*
- The mine is represented by a 8 by 8 grid, which is implemented by two dimensional arrays.
- Value Array: This array contains the "value" behind every tile in a mine. The "value" is a number
- between 0 and 8, where 0 denotes that the tile is a bomb and 1-8 denotes the
- number of bombs within the radius of the tile.
- 
- Mine Array: This array is displayed to the user and represents the current state of the mine as
- to the user. Uncovered tiles are represented by '*'. Covered tiles are represented by
- its "value" (1 - 8). Marked tiles (marked as a bomb by the user) are represented by 'B'.
- 
- Dynamics of the game: The mine has a maximum of 25 bombs which are randomly allocated to the tiles per
- execution of the program. Game is over once a bomb is uncovered. Game is won once
- all non-bomb tiles have been uncovered.
- */
 
 int const size = 9; // mine displayed to the user is 8 by 8 but as first row and column are indexes, arrays are 9 by 9.
+int const total_bombs = 25;
 
 // helps in counting the number of bombs in radius of a tile
 int bomb (int value) {
@@ -33,11 +20,10 @@ int bomb (int value) {
     return 0;
 }
 // takes in a different array which is the "value array". Randomly allocates 0 and 1 to the tiles
-// and makes sure that there are exactly 25 bombs.
+// and makes sure that there are exactly "total_bombs" number of bombs
 void allocate_bombs(int values[size][size])
-{   int const max_bombs = 25;
-    int bombs = 0;
-    while(bombs <= max_bombs) {
+{   int bombs = 0;
+    while(bombs <= total_bombs) {
         for (int i = 1; i < size ; ++i)
             for (int j = 1; j < size; ++j) {
                 values[i][j] = rand() % 2;
@@ -137,7 +123,7 @@ int main() {
     {
         std::cout<<"Please choose an option"<<std::endl;
         std::cout<<"N: New Game"<<std::endl;
-        std::cout<<"C: Enter a coordinate"<<std::endl;
+        std::cout<<"C: Enter a coordinateNQ"<<std::endl;
         std::cout<<"Q: Quit Game"<<std::endl;
         std::cin>>command;
         switch(toupper(command)) {
